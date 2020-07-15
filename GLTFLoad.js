@@ -105,6 +105,9 @@ class App extends Component {
   startAnimationLoop = () => {
     this.renderer.render(this.scene, this.camera);
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop);
+    if (this.obj !== undefined) {
+      this.obj.rotation.z += 0.01;
+    }
   };
 
   //RISIZE
