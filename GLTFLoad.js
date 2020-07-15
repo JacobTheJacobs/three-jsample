@@ -56,40 +56,29 @@ class App extends Component {
 
     //init Clock
     this.clock = new THREE.Clock();
-
-    //skybox
     const assetPath = "https://s3-us-west-2.amazonaws.com/s.cdpn.io/2666677/";
+    //skybox
     const envMap = new THREE.CubeTextureLoader()
-      .setPath(`${assetPath}skybox3_`)
+      .setPath(`${assetPath}skybox1_`)
       .load(["px.jpg", "nx.jpg", "py.jpg", "ny.jpg", "pz.jpg", "nz.jpg"]);
     this.scene.background = envMap;
 
     //camera
     this.camera = new THREE.PerspectiveCamera(
-      75,
+      60,
       window.innerWidth / window.innerHeight,
       0.1,
       1000
     );
-
-    this.camera.position.set(0, 8, 15); //wide position
+    this.camera.position.set(0, 4, 57); //wide position
+    this.camera.lookAt(0, 1.5, 0);
 
     //lights
     const ambient = new THREE.HemisphereLight(0xffffff, 0xaaaa66, 0.35);
     this.scene.add(ambient);
 
-    const light = new THREE.DirectionalLight(0xffffff, 0.7);
-    light.castShadow = true;
-    light.shadow.mapSize.width = 1024;
-    light.shadow.mapSize.height = 1024;
-    light.shadow.near = 1;
-    light.shadow.far = 100;
-    const shadowSize = 5;
-    light.shadow.left = -shadowSize;
-    light.shadow.right = shadowSize;
-    light.shadow.top = shadowSize;
-    light.shadow.bottom = -shadowSize;
-    light.position.set(-1, 10, 6);
+    const light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(1, 10, 6);
     this.scene.add(light);
 
     //object
@@ -105,7 +94,7 @@ class App extends Component {
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(width, height);
     this.el.appendChild(this.renderer.domElement); // mount using React ref
-    this.renderer.setClearColor("#263238");
+
     //controls
     this.controls = new OrbitControls(this.camera, this.el);
     this.controls.target.set(1, 1, 0);
@@ -114,12 +103,8 @@ class App extends Component {
 
   //UPDATE
   startAnimationLoop = () => {
-    //this.camera.rotation.x = Math.PI * 0.1;
     this.renderer.render(this.scene, this.camera);
     this.requestID = window.requestAnimationFrame(this.startAnimationLoop);
-    if (this.obj !== undefined) {
-      this.obj.rotation.y += 0.01;
-    }
   };
 
   //RISIZE
